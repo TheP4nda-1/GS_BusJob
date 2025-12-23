@@ -37,7 +37,7 @@ Der BusJob ist ein ESX-basierter Job, bei dem Spieler als Busfahrer arbeiten und
 ```cfg
 ensure busjob
 Job in der Datenbank anlegen:
-
+```
 sql
 Code kopieren
 INSERT INTO jobs (name, label) VALUES ('bus', 'Busfahrer');
