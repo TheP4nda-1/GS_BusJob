@@ -1,0 +1,185 @@
+* {
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: auto;
+    height: auto;
+    
+    overflow: hidden;
+    
+}
+
+/* Hauptfenster */
+.menu {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    color: rgb(211, 211, 211);
+    transform: translate(-50%, -50%);
+    background-color: rgb(34, 35, 37);
+    border-radius: 16px;
+    padding: 24px;
+    display: none;
+}
+
+/* Header */
+.menu-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.logo {
+    font-weight: 800;
+    font-size: 22px;
+    color: #d1d1d1;
+}
+
+.menu-header h1 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.menu-header p {
+    margin: 0;
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+.close-btn {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: #aaa;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Grid */
+.routes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+/* Karten */
+.route-card {
+    background: rgba(40, 40, 40, 0.9);
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: 0.2s;
+    position: relative;
+}
+
+.route-card:hover {
+    background: rgba(55,55,55,0.95);
+}
+
+.route-card.selected {
+    outline: 2px solid rgba(255,255,255,0.15);
+}
+
+/* Header der Karte */
+.route-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.route-name {
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Auswahlpunkt */
+.selected-indicator {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.selected-dot {
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+}
+
+/* Info */
+.route-info {
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.info-label {
+    opacity: 0.6;
+}
+
+/* Difficulty Farben */
+.difficulty-easy {
+    color: #4ade80;
+}
+.difficulty-medium {
+    color: #facc15;
+}
+.difficulty-hard {
+    color: #f87171;
+}
+
+/* Footer */
+.menu-footer {
+    margin-top: 20px;
+    background: rgba(255,255,255,0.04);
+    padding: 14px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.info-text {
+    flex: 1;
+    font-size: 13px;
+    opacity: 0;
+    transition: 0.2s;
+}
+
+.info-text.visible {
+    opacity: 0.7;
+}
+
+/* Start Button */
+.start-btn {
+    background: linear-gradient(to right, #555, #666);
+    border: none;
+    border-radius: 10px;
+    padding: 12px 24px;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.start-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}

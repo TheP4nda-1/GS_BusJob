@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Bus Job</title>
+    <link rel="stylesheet" href="main.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="menu">
+    <!-- Header -->
+    <div class="menu-header">
+        <div class="logo">GS</div>
+        <div>
+            <h1>Bus Job</h1>
+            <p>Wähle deine Route</p>
+        </div>
+        <button class="close-btn" id="closeButton">✕</button>
+    </div>
+
+    <!-- Routes -->
+    <div id="routesGrid" class="routes-grid"></div>
+
+    <!-- Footer -->
+    <div class="menu-footer">
+        <span id="infoText" class="info-text visible">
+            Bitte wähle eine Route aus
+        </span>
+        <button id="startBtn" class="start-btn" onclick="startRoute()" disabled>
+            ▶ <span id="startBtnText">Route starten</span>
+        </button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
