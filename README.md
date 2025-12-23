@@ -305,7 +305,7 @@ v1.0.0
 <details>
 <summary><strong>👑 Credits & License</strong></summary>
 
-Author: Dein Name  
+Author: TheP4nda(Walter David)  
 Framework: ESX  
 Usage: Private / Public / Commercial (anpassen)
 
