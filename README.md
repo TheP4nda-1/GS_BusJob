@@ -238,7 +238,7 @@ Author: Dein Name
 Framework: ESX
 Usage: Free / Private / Commercial (anpassen)
 
-</details> ```
+</details>
 ✅ Ergebnis
 ✔️ Eine einzige README.md
 
