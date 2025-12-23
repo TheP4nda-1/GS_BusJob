@@ -1,32 +1,50 @@
-# GS_BusJob
-Fivem ESX.BusJob
-1️⃣ Overview
-Der BusJob ist ein routenbasierter Job, bei dem Spieler:
-Eine Route auswählen
-Ein Bus-Fahrzeug spawnen
-Haltestellen abfahren
-Pro Halt bezahlt werden
-Am Ende einen Bonus erhalten
-Features:
-Mehrere Routen
-Dynamische Haltestellen
-Automatische Blips
-ESX-kompatibel
-Erweiterbar für Level / XP / Trinkgeld
+# 🚌 BusJob – Developer Documentation
 
-2️⃣ Installation
-Voraussetzungen
-ESX Legacy
-OneSync empfohlen
-Funktionierendes Job-System
-Schritte
-Ordner in resources/[jobs]/busjob
-In server.cfg:
+Vollständige Entwickler-Dokumentation für den **ESX BusJob**  
+Alle Inhalte sind in Dropdowns organisiert, damit die README übersichtlich bleibt.
+
+---
+
+<details>
+<summary><strong>📘 Overview</strong></summary>
+
+### Was ist der BusJob?
+Der BusJob ist ein ESX-basierter Job, bei dem Spieler als Busfahrer arbeiten und feste Routen mit mehreren Haltestellen abfahren.
+
+### Features
+- Mehrere Routen
+- Haltestellen-System
+- Bezahlung pro Halt
+- Abschlussbonus
+- Blip-Navigation
+- Voll konfigurierbar
+
+### Voraussetzungen
+- ESX Legacy
+- Empfohlen: OneSync
+- Funktionierendes Job-System
+
+</details>
+
+---
+
+<details>
+<summary><strong>⚙️ Installation</strong></summary>
+
+### Installation
+1. Script in den resources Ordner legen  
+2. In `server.cfg` eintragen:
+```cfg
 ensure busjob
-Job in Datenbank anlegen:
-INSERT INTO jobs (name, label) VALUES ('bus', 'Busfahrer');
+Job in der Datenbank anlegen:
 
-3️⃣ File Structure
+sql
+Code kopieren
+INSERT INTO jobs (name, label) VALUES ('bus', 'Busfahrer');
+</details>
+<details> <summary><strong>📁 File Structure</strong></summary>
+text
+Code kopieren
 busjob/
 │
 ├── client/
@@ -40,137 +58,193 @@ busjob/
 ├── config.lua
 ├── fxmanifest.lua
 └── README.md
+client/
+→ Alles was der Spieler sieht (Blips, Routen, UI)
 
-4️⃣ Config Reference (config.lua)
-Grundkonfiguration
-Config = {}
+server/
+→ Bezahlung, Sicherheit, Checks
 
+</details>
+<details> <summary><strong>🛠️ Configuration (config.lua)</strong></summary>
+Allgemein
+lua
+Code kopieren
 Config.JobName = "bus"
 Config.Locale = "de"
 Config.Debug = false
-Zahlung
+Option	Typ	Beschreibung
+JobName	string	ESX Jobname
+Locale	string	Sprache
+Debug	boolean	Debug-Ausgaben
+
+Payment
+lua
+Code kopieren
 Config.PayPerStop = 120
 Config.FinishBonus = 500
-Config.PayAccount = "money" -- money | bank
-
-5️⃣ Routes System
+Config.PayAccount = "money"
+</details>
+<details> <summary><strong>🛣️ Routes</strong></summary>
 Routen definieren
+lua
+Code kopieren
 Config.Routes = {
     [1] = {
         label = "Stadtzentrum",
         difficulty = "Einfach",
         stops = {
             vector3(435.1, -645.2, 28.7),
-            vector3(210.4, -1020.5, 29.3),
-            vector3(-305.7, -890.2, 31.1)
-        }
-    },
-
-    [2] = {
-        label = "Flughafen Express",
-        difficulty = "Mittel",
-        stops = {
-            vector3(-1032.6, -2734.8, 20.1),
-            vector3(-1150.4, -2850.2, 13.9)
+            vector3(210.4, -1020.5, 29.3)
         }
     }
 }
-Wichtige Hinweise
-Reihenfolge = Fahrreihenfolge
-Jeder vector3 ist ein Halt
+Hinweise
+Reihenfolge der Stops = Fahrreihenfolge
+
 Beliebig viele Routen möglich
 
-6️⃣ NPC & Spawn Settings
-NPC konfigurieren
+Jede Route ist unabhängig
+
+</details>
+<details> <summary><strong>👤 NPC & Locations</strong></summary>
+lua
+Code kopieren
 Config.BusNPC = {
     model = "s_m_m_gentransport",
     coords = vector3(450.2, -630.3, 28.5),
     heading = 90.0
 }
 Bus Spawn
+lua
+Code kopieren
 Config.BusSpawn = {
     coords = vector3(462.3, -620.8, 28.4),
     heading = 180.0,
     model = "bus"
 }
-
-7️⃣ Vehicle Handling
-Bus spawnen
+</details>
+<details> <summary><strong>🚌 Vehicle System</strong></summary>
+lua
+Code kopieren
 ESX.Game.SpawnVehicle("bus", Config.BusSpawn.coords, Config.BusSpawn.heading, function(vehicle)
     TaskWarpPedIntoVehicle(PlayerPedId(), vehicle, -1)
     SetVehicleEngineOn(vehicle, true, true, false)
     SetVehicleNumberPlateText(vehicle, "BUSJOB")
     SetEntityAsMissionEntity(vehicle, true, true)
 end)
-Sicherheitsfunktionen
-Fahrzeug wird getrackt
-Job endet bei Fahrzeugverlust
-Nur Bus erlaubt
+Sicherheit
+Nur Job-Fahrzeug erlaubt
 
-8️⃣ Payment System
-Bezahlung pro Halt
+Fahrzeug wird getrackt
+
+Despawn bei Job-Ende
+
+</details>
+<details> <summary><strong>💰 Payment System</strong></summary>
+Pro Halt
+lua
+Code kopieren
 TriggerServerEvent("busjob:payStop")
-Server:
+Server
+lua
+Code kopieren
 RegisterNetEvent("busjob:payStop", function()
     local xPlayer = ESX.GetPlayerFromId(source)
     xPlayer.addAccountMoney(Config.PayAccount, Config.PayPerStop)
 end)
-Bonus am Ende
+Abschlussbonus
+lua
+Code kopieren
 xPlayer.addAccountMoney(Config.PayAccount, Config.FinishBonus)
-
-9️⃣ Blips & UI
-Haltestellen-Blip
+</details>
+<details> <summary><strong>🗺️ Blips & UI</strong></summary>
+lua
+Code kopieren
 local blip = AddBlipForCoord(stopCoords)
 SetBlipSprite(blip, 513)
 SetBlipColour(blip, 22)
 SetBlipRoute(blip, true)
-Dauerhafter Job-Blip
 SetBlipAsShortRange(blip, false)
-
-🔟 Events & Exports
+</details>
+<details> <summary><strong>🔌 Events & Exports</strong></summary>
 Client Events
 busjob:startRoute
+
 busjob:nextStop
+
 busjob:finishRoute
+
 Server Events
 busjob:payStop
+
 busjob:payFinish
-Export (optional)
+
+Export
+lua
+Code kopieren
 exports("IsBusJobActive", function()
     return isOnRoute
 end)
-
-1️⃣1️⃣ Permissions & Job Check
+</details>
+<details> <summary><strong>🔐 Permissions & Job Checks</strong></summary>
+lua
+Code kopieren
 if ESX.PlayerData.job.name ~= Config.JobName then
     ESX.ShowNotification("Du bist kein Busfahrer")
     return
 end
-Optional:
-Dienstsystem
-Uniform Pflicht
-Level-Abfrage
-
-1️⃣2️⃣ Customization Examples
-Trinkgeld-System
+</details>
+<details> <summary><strong>🧩 Customization</strong></summary>
+Trinkgeld
+lua
+Code kopieren
 local tip = math.random(10, 50)
 xPlayer.addMoney(tip)
-XP / Level
+XP System
+lua
+Code kopieren
 PlayerXP = PlayerXP + 1
-Fahrfehler-Abzug
+Strafen
+lua
+Code kopieren
 xPlayer.removeMoney(50)
+</details>
+<details> <summary><strong>🛠️ Troubleshooting</strong></summary>
+Häufige Fehler
+❌ Kein Geld → Server Event fehlt
 
-1️⃣3️⃣ Debugging & Common Errors
-NetID Fehler
-➡ Fahrzeug vor Nutzung als MissionEntity setzen
-Blip verschwindet
-➡ Referenz speichern, nicht lokal überschreiben
-Spieler kann mehrfach starten
-➡ Boolean isOnRoute nutzen
-if isOnRoute then return end
+❌ Blip weg → Referenz überschrieben
 
-✅ Best Practices
-✔ Route-Daten nur in config.lua
-✔ Kein Hardcoding
-✔ Events immer serverseitig absichern
-✔ Debug-Prints über Config.Debug
+❌ Fahrzeug NetID Fehler → MissionEntity fehlt
+
+Debug
+lua
+Code kopieren
+if Config.Debug then
+    print("DEBUG: Route gestartet")
+end
+</details>
+<details> <summary><strong>📄 Changelog</strong></summary>
+v1.0.0
+Initial Release
+
+Routen-System
+
+Payment-System
+
+</details>
+<details> <summary><strong>👑 Credits & License</strong></summary>
+Author: Dein Name
+Framework: ESX
+Usage: Free / Private / Commercial (anpassen)
+
+</details> ```
+✅ Ergebnis
+✔️ Eine einzige README.md
+
+✔️ Dropdowns (aufklappbar)
+
+✔️ Sauber & professionell
+
+✔️ Perfekt für GitHub / Release
 
